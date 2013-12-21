@@ -2,6 +2,40 @@
 
 NodeJS Module to create, list and remove [Day One](http://dayoneapp.com/) Journal entries, without using the [Day One command line tools](http://dayoneapp.com/tools/).
 
+
+NOTE: Forked from [https://github.com/pwaldhauer/dayone](https://github.com/pwaldhauer/dayone) so that I could update it to work with the new Day One file format. There are few "breaking" changes due to some restructuring but by and large it should work the same.
+
+Differences:
+
+Old
+```javascript
+entry.text = 'Blah';
+```
+
+New
+```javascript
+entry.entryText = 'Blah';
+```
+
+AND
+
+Old
+```javascript
+entry.location = {
+	'Gross Spaces': 'Blah'
+};
+```
+
+New
+```javascript
+entry.location = {
+	noGrossSpaces: 'Blah'
+};
+```
+
+Both changes were made to make the module more adaptable to future format changes and to avoid mixing camelCased code with key's that have spaces (What the plist file uses for it's keys).
+
+
 ## Usage
 
 ```javascript
@@ -11,13 +45,8 @@ var DayOneEntry = require('dayone').DayOneEntry;
 // Basic entry
 var entry = new DayOneEntry();
 entry.creationDate = new Date();
-entry.text = 'Very thoughtful entry!';
+entry.entryText = 'Very thoughtful entry!';
 entry.tags = ['Test'];
-
-// Attach a photo!
-var entryWithPhoto = new DayOneEntry();
-entryWithPhoto.text = 'Have a photo!';
-entryWithPhoto.photo = new Buffer(fs.readFileSync('photo.jpg'));
 
 var dayone = new DayOne();
 
